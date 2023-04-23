@@ -1,0 +1,25 @@
+#main-img {
+  display: block;
+  margin: 0 auto;
+  height: 180px;
+  width: 180px;
+  padding: 0px;
+}
+#button-coord {
+  margin-top: 20px;
+  border: none;
+  border-radius: 30px;
+  background-color: transparent;
+  padding: 10px 20px 10px 0px;
+  transition: all 200ms ease;
+}
+#button-coord:hover {
+  padding: 10px 20px;
+  background-color: rgba(56, 81, 112, 0.1);
+}
+footer {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0px 0px 20px 0px;
+}
