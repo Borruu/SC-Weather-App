@@ -1,17 +1,22 @@
 // const apiKey = "bc5ca568ee2d7c71357ca430a3ff8705";
 const apiKey = "036182605aa974c0da6a0423afbb7cc0";
 
+var units = "metric";
+var unit_text = "°C";
+
 // Get forecast using coordinates
 function getForecast(coordinates) {
-  let forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+  console.log(coordinates);
+  let forecastUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=${units}`;
+  //   let forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
   axios.get(forecastUrl).then(displayForecast);
 }
 //forecast div & code for week
 function displayForecast(response) {
   console.log(response);
   let forecast = response.data.daily;
-  let forecastElement = document.querySelector("#forecast");
-  let forecastHTML = `<div class="row week">`;
+  var forecastElement = document.querySelector("#forecast");
+  var forecastHTML = `<div class="row week">`;
 
   forecast.forEach(function (forecastDay, index) {
     if (index < 6) {
@@ -46,7 +51,7 @@ function formatFCDay(timestamp) {
 //City display from search bar input, then run function to search URL
 function searchGo(city) {
   //   let apiKey = "c95d60a1e3adbeb286133f1ebebc2579";
-  let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
   console.log(weatherUrl);
   axios.get(weatherUrl).then(showRealTemp);
 }
@@ -62,18 +67,19 @@ go.addEventListener("submit", handleSubmit);
 
 // Update HTML with current weather for searched city, then invoke getForecast with coordinates
 function showRealTemp(response) {
+  console.log(response);
   celTemp = response.data.main.temp;
   let currentTemp = Math.round(response.data.main.temp);
   //need to add an error message here when city is not found
-  primaryTemp.innerHTML = `${currentTemp}°C`;
+  primaryTemp.innerHTML = `${currentTemp}${unit_text}`;
   document.querySelector("#city-in").innerHTML = `${response.data.name}`;
   document.querySelector(
     "#descr"
   ).innerHTML = `${response.data.weather[0].description}`;
   console.log(response.data.wind.speed);
-  document.querySelector("#wind-sp").innerHTML = `Wind: ${Math.round(
-    response.data.wind.speed
-  ).toString()}km p/h`;
+  //   document.querySelector("#wind-sp").innerHTML = `Wind: ${Math.round(
+  //     response.data.wind.speed
+  //   ).toString()}km p/h`;
   let iconElementMain = document.querySelector("#main-img");
   iconElementMain.setAttribute(
     "src",
@@ -87,24 +93,34 @@ let primaryTemp = document.querySelector("#prim-max-min");
 // Celsius units selected
 function updatePrimaryTempCel(event) {
   event.preventDefault();
+  units = "metric";
+  unit_text = "°C";
   if (celTemp === null) {
     alert("Try searching for a location or click Show Location button");
   } else {
     selectCelsius.classList.add("active");
     selectFahren.classList.remove("active");
-    primaryTemp.innerHTML = `${Math.round(celTemp)}°C`;
+    // primaryTemp.innerHTML = `${Math.round(celTemp)}°C`;
+    let city = document.querySelector("#city-in").innerHTML;
+    console.log(city);
+    searchGo(city);
   }
 }
 // Farenheit units selected
 function updatePrimaryTempFh(event) {
   event.preventDefault();
+  units = "imperial";
+  unit_text = "°F";
   if (celTemp === null) {
     alert("Try searching for a location or click Show Location button");
   } else {
     selectFahren.classList.add("active");
     selectCelsius.classList.remove("active");
-    let fhTemp = (celTemp * 9) / 5 + 32;
-    primaryTemp.innerHTML = `${Math.round(fhTemp)}°F`;
+    // let fhTemp = (celTemp * 9) / 5 + 32;
+    // primaryTemp.innerHTML = `${Math.round(fhTemp)}°F`;
+    let city = document.querySelector("#city-in").innerHTML;
+    console.log(city);
+    searchGo(city);
   }
 }
 // Event listeners for Celsius/Farenheit unit selected
@@ -122,7 +138,7 @@ function showPosition(position) {
   showLat.innerHTML = `${lat}`;
   showLong.innerHTML = `${long}`;
   //   let apiKey = "5f472b7acba333cd8a035ea85a0d4d4c";
-  let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`;
+  let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=${units}`;
   console.log(weatherUrl);
   axios.get(weatherUrl).then(showRealTempLocation);
 }
@@ -139,16 +155,16 @@ showCoord.addEventListener("click", getCurrentPosition);
 function showRealTempLocation(response) {
   celTemp = response.data.main.temp;
   let currentTemp = Math.round(response.data.main.temp);
-  primaryTemp.innerHTML = `${currentTemp}°C`;
+  primaryTemp.innerHTML = `${currentTemp}${unit_text}`;
   let h2City = document.querySelector("#city-in");
   h2City.innerHTML = `${response.data.name}`;
   document.querySelector(
     "#descr"
   ).innerHTML = `${response.data.weather[0].description}`;
   console.log(response.data.wind.speed);
-  document.querySelector("#wind-sp").innerHTML = `Wind: ${Math.round(
-    response.data.wind.speed
-  )}km p/h`;
+  //   document.querySelector("#wind-sp").innerHTML = `Wind: ${Math.round(
+  //     response.data.wind.speed
+  //   )}km p/h`;
   let iconElementMain = document.querySelector("#main-img");
   iconElementMain.setAttribute(
     "src",
@@ -203,4 +219,4 @@ h4Hours.innerHTML = `${hh}:${mm}`;
 
 // Default search on start up
 searchGo("Cairo");
-displayForecast();
+// displayForecast();
