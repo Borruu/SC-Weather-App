@@ -1,9 +1,32 @@
+.location {
+  padding: 30px;
+  border-radius: 10px;
+}
+a {
+  text-decoration: none;
+}
+.main-details {
+  text-align: left;
+}
+.unit {
+  text-align: center;
+}
+.unit .active {
+  color: black;
+  font-size: 18px;
+  cursor: default;
+}
 #main-img {
   display: block;
   margin: 0 auto;
   height: 180px;
   width: 180px;
   padding: 0px;
+}
+.week {
+  text-align: center;
+  padding-top: 0;
+  padding-bottom: 7px;
 }
 #button-coord {
   margin-top: 20px;
