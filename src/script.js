@@ -11,7 +11,7 @@ function getForecast(coordinates) {
   //   let forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
   axios.get(forecastUrl).then(displayForecast);
 }
-//forecast div & code for week
+//Show forecast for 6 days
 function displayForecast(response) {
   console.log(response);
   let forecast = response.data.daily;
@@ -22,12 +22,12 @@ function displayForecast(response) {
     if (index < 6) {
       forecastHTML =
         forecastHTML +
-        `<div class="col-2"><span class="forecast-day">${formatFCDay(
+        `<div class="col-2"><div class="forecast-day">${formatFCDay(
           forecastDay.dt
-        )}</span>
+        )}</div><div>
                 <img class="forecast-week-icon" src="http://openweathermap.org/img/wn/${
                   forecastDay.weather[0].icon
-                }@2x.png" width=60px/>
+                }@2x.png" width=60px/></div>
                 
                 <div class="forecast-temp"><span class="forecast-temp-max">${Math.round(
                   forecastDay.temp.max
@@ -88,7 +88,7 @@ function showRealTemp(response) {
   getForecast(response.data.coord);
 }
 
-let primaryTemp = document.querySelector("#prim-max-min");
+let primaryTemp = document.querySelector("#right-now-temp");
 
 // Celsius units selected
 function updatePrimaryTempCel(event) {
@@ -213,7 +213,7 @@ let months = [
 ];
 let month = months[now.getMonth()];
 let h3Time = document.querySelector("#time");
-h3Time.innerHTML = `${day}, ${month} ${date}, ${year}`;
+h3Time.innerHTML = `${day}, ${month} ${date}`;
 let h4Hours = document.querySelector("#hours");
 h4Hours.innerHTML = `${hh}:${mm}`;
 

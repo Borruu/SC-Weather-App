@@ -23,6 +23,10 @@ a {
   width: 180px;
   padding: 0px;
 }
+#prim-max-min {
+  display: block;
+  margin: 0 auto;
+}
 .week {
   text-align: center;
   padding-top: 0;
