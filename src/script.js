@@ -53,7 +53,13 @@ function searchGo(city) {
   //   let apiKey = "c95d60a1e3adbeb286133f1ebebc2579";
   let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=${units}`;
   console.log(weatherUrl);
-  axios.get(weatherUrl).then(showRealTemp);
+  try {
+    axios.get(weatherUrl);
+  } catch {
+    alert(`Sorry! We could not find that location.`);
+  } finally {
+    axios.get(weatherUrl).then(showRealTemp);
+  }
 }
 // Event handler for search bar input
 function handleSubmit(event) {
@@ -76,6 +82,9 @@ function showRealTemp(response) {
   document.querySelector(
     "#descr"
   ).innerHTML = `${response.data.weather[0].description}`;
+  document.querySelector("#windMain").innerHTML = `Wind: ${Math.round(
+    response.data.wind.speed
+  ).toString()} km/h`;
   console.log(response.data.wind.speed);
   //   document.querySelector("#wind-sp").innerHTML = `Wind: ${Math.round(
   //     response.data.wind.speed
@@ -129,7 +138,7 @@ selectCelsius.addEventListener("click", updatePrimaryTempCel);
 let selectFahren = document.querySelector("#fh-link");
 selectFahren.addEventListener("click", updatePrimaryTempFh);
 
-// Display coordinates of current location and invoke
+// Display coordinates of current location and invoke showRealTempLocation
 function showPosition(position) {
   let lat = position.coords.latitude;
   let long = position.coords.longitude;
@@ -162,9 +171,9 @@ function showRealTempLocation(response) {
     "#descr"
   ).innerHTML = `${response.data.weather[0].description}`;
   console.log(response.data.wind.speed);
-  //   document.querySelector("#wind-sp").innerHTML = `Wind: ${Math.round(
-  //     response.data.wind.speed
-  //   )}km p/h`;
+  document.querySelector("#windMain").innerHTML = `Wind: ${Math.round(
+    response.data.wind.speed
+  ).toString()} km/h`;
   let iconElementMain = document.querySelector("#main-img");
   iconElementMain.setAttribute(
     "src",
